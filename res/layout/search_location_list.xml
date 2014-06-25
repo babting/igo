@@ -1,0 +1,45 @@
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical" >
+
+    <LinearLayout
+        android:id="@+id/searchLocResultRelativeLayout"
+    	android:layout_width="match_parent"
+    	android:layout_height="wrap_content"
+    	android:padding="10dp"
+    	android:orientation="horizontal"
+    	>
+   		<Button 
+        android:id="@+id/searchLocResultBackBtn"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Cancel"/>
+   		<Button 
+        android:id="@+id/searchLocNaverResultBtn"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Naver"/>
+   		<Button 
+        android:id="@+id/searchLocGoogleResultBtn"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Google"/>
+    </LinearLayout>
+    
+    <FrameLayout 
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+ 		>
+        <ListView 
+            android:id="@+id/searchLocListView"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:visibility="visible"
+           >
+        </ListView>
+    </FrameLayout>
+    
+    
+</LinearLayout>

@@ -1,0 +1,20 @@
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/searchLocationRstCustomLinear"
+    android:layout_width="match_parent"
+    android:layout_height="100dp"
+    >
+
+   <TextView 
+       android:id="@+id/searchLocationRstCustomTextViewTitle"
+       android:layout_width="match_parent"
+       android:layout_height="wrap_content"
+       />
+    
+   <TextView 
+       android:id="@+id/searchLocationRstCustomTextViewDesc"
+       android:layout_width="match_parent"
+       android:layout_height="wrap_content"
+       android:layout_below="@+id/searchLocationRstCustomTextViewTitle"
+       />
+</RelativeLayout>

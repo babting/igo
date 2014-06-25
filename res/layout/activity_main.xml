@@ -1,0 +1,54 @@
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".MainActivity">
+    
+	<fragment android:id="@+id/map"
+	    android:layout_width="match_parent"
+	    android:layout_height="match_parent"
+	    class="com.google.android.gms.maps.SupportMapFragment" />
+	
+	<LinearLayout
+	    android:id="@+id/searchLocLinearLayout"
+	    android:layout_width="match_parent"
+	    android:layout_height="wrap_content"
+	    android:layout_alignParentLeft="true"
+	    android:layout_alignParentTop="true"
+	    android:orientation="horizontal" >
+
+	    <EditText
+	        android:id="@+id/searchLocEditText"
+	        android:layout_width="0dp"
+	        android:layout_height="wrap_content"
+	        android:layout_weight="8.75"
+	        android:inputType="text"
+	        android:textSize="23sp" 
+	        android:background="#AAFFFFFF" 
+	        android:layout_marginTop="4dp"
+	        >
+
+	    </EditText>
+
+	    <Button
+	        android:id="@+id/searchLocBtn"
+	        android:layout_width="wrap_content"
+	        android:layout_height="32dp"
+	        android:text="search"
+	        android:textSize="12sp" 
+	        android:background="#FFFFFFFF"
+	        android:layout_marginLeft="10dp"/>
+
+	</LinearLayout>
+	
+	<Button
+	    android:id="@+id/addPlaceBtn"
+	    android:layout_width="match_parent"
+	    android:layout_height="wrap_content"
+	    android:text="add place"
+	    android:layout_alignParentBottom="true"
+	    android:textSize="15sp"
+	    android:visibility="invisible"
+	    />
+
+</RelativeLayout>
