@@ -9,7 +9,7 @@ import org.codehaus.jackson.map.annotate.JsonSerialize;
 
 import com.babting.igo.exception.ParserException;
 
-public class JacksonParser implements Parser {
+public class JacksonParser {
 	protected ObjectMapper mapper;
 	
 	public static final JacksonParser instance = new JacksonParser();
@@ -35,7 +35,6 @@ public class JacksonParser implements Parser {
 	/* (non-Javadoc)
 	 * @see com.nhn.android.appstore.common.jsonparser.JsonParser#readValue(java.lang.String, java.lang.Class)
 	 */
-	@Override
 	public <T> T readValue(String jsonContent, Class<T> valueType) throws ParserException {
 		try {
 //			mapper.readValue(jsonContent, valueType);
@@ -45,7 +44,6 @@ public class JacksonParser implements Parser {
 		}
 	}
 	
-	@Override
 	public <T> T readValue(InputStream inputStream, Class<T> valueType) throws ParserException {
 		return this.readValue(inputStream.toString(), valueType);
 	}
@@ -53,7 +51,6 @@ public class JacksonParser implements Parser {
 	/* (non-Javadoc)
 	 * @see com.nhn.android.appstore.common.jsonparser.JsonParser#writeValueAsString(java.lang.Object)
 	 */
-	@Override
 	public String writeValueAsString(Object value) throws ParserException {
 		try {
 			return mapper.writeValueAsString(value);

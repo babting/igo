@@ -11,7 +11,7 @@ import android.widget.BaseAdapter;
 import android.widget.TextView;
 
 import com.babting.igo.R;
-import com.babting.igo.xml.model.SearchLocationResultAdapterModel;
+import com.babting.igo.api.result.SearchLocationResultAdapterModel;
 
 public class SearchLocationResultAdapter extends BaseAdapter {
 	private Context context;

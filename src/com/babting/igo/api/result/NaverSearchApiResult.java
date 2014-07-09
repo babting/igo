@@ -1,8 +1,8 @@
-package com.babting.igo.api;
+package com.babting.igo.api.result;
 
 import java.util.List;
 
-import com.babting.igo.xml.model.NaverSearchApiModel;
+import com.babting.igo.model.xml.NaverSearchApiModel;
 
 public class NaverSearchApiResult extends ApiResult {
 	private List<NaverSearchApiModel> naverSearchApiModelList;

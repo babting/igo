@@ -1,5 +1,7 @@
 package com.babting.igo.api;
 
+import com.babting.igo.api.result.ApiResult;
+
 import android.content.Context;
 
 public interface ApiCallback {

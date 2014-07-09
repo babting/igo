@@ -1,4 +1,4 @@
-package com.babting.igo.xml.model;
+package com.babting.igo.api.result;
 
 import android.os.Parcel;
 import android.os.Parcelable;

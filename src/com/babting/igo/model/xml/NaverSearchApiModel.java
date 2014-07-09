@@ -1,4 +1,4 @@
-package com.babting.igo.xml.model;
+package com.babting.igo.model.xml;
 
 public class NaverSearchApiModel {
 	private String title;

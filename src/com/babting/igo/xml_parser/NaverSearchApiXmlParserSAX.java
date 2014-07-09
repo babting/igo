@@ -1,4 +1,4 @@
-package com.babting.igo.xml.model;
+package com.babting.igo.xml_parser;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -16,6 +16,8 @@ import org.xml.sax.InputSource;
 import org.xml.sax.SAXException;
 import org.xml.sax.SAXParseException;
 import org.xml.sax.helpers.DefaultHandler;
+
+import com.babting.igo.model.xml.NaverSearchApiModel;
 
 import android.util.Xml;
 

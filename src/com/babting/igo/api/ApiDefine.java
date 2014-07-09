@@ -1,6 +1,7 @@
 package com.babting.igo.api;
 
 import com.babting.igo.api.DefaultConstants.HttpMethod;
+import com.babting.igo.api.result.ApiResult;
 
 public class ApiDefine {
 	/**

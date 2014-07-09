@@ -1,27 +1,75 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
-    android:layout_width="300dp"
-    android:layout_height="400dp" >
+    android:layout_width="match_parent"
+    android:layout_height="match_parent" >
 
-    <Button
-        android:id="@+id/backBtn"
-        android:layout_width="180dp"
-        android:layout_height="wrap_content"
-        android:layout_centerHorizontal="true"
-        android:layout_centerVertical="true"
-        android:text="돌아가기"
-        android:textSize="22dp"
-        tools:context=".MainActivity" />
+	<fragment android:id="@+id/addLocFormPreviewMap"
+	    android:layout_width="match_parent"
+	    android:layout_height="200dp"
+	    class="com.google.android.gms.maps.SupportMapFragment" />
+	
+	<LinearLayout
+	    android:id="@+id/addLocFormRelLayout" 
+	    android:layout_below="@+id/addLocFormPreviewMap"
+	    android:layout_marginTop="5dp"
+	    android:layout_height="wrap_content"
+	    android:layout_width="match_parent"
+	    android:orientation="horizontal"
+	    >
+		<Button
+	        android:id="@+id/backBtn"
+	        android:layout_width="wrap_content"
+	        android:layout_height="wrap_content"
+	        android:layout_marginRight="3dp"
+	        android:text="Cancel"
+	        android:textSize="12sp"
+	        tools:context=".MainActivity" />
+		
+		<Button
+	        android:id="@+id/registBtn"
+	        android:layout_width="wrap_content"
+	        android:layout_height="wrap_content"
+	        android:text="Regist"
+	        android:textSize="12sp"
+	        tools:context=".MainActivity" />
+	</LinearLayout>
+	
+	<TextView 
+	    android:id="@+id/addLocFormTitleTxt"
+	    android:text="Title"
+	    android:layout_alignParentLeft="true"
+	    android:layout_below="@+id/addLocFormRelLayout"
+	    android:layout_width="100dp"
+	    android:layout_marginTop="10dp"
+	    android:layout_height="wrap_content"
+	    />
+	
+	<EditText 
+	    android:id="@+id/addLocFormTitleEditText"
+	    android:layout_toRightOf="@+id/addLocFormTitleTxt"
+	    android:layout_alignBaseline="@+id/addLocFormTitleTxt"
+	    android:layout_width="match_parent"
+	    android:layout_height="wrap_content"
+	    android:textSize="12sp" 
+	    android:inputType="text"/>
+	
+	<TextView 
+	    android:id="@+id/addLocFormDescTxt"
+	    android:text="Desc"
+	    android:layout_alignParentLeft="true"
+	    android:layout_below="@+id/addLocFormTitleTxt"
+	    android:layout_width="100dp"
+	    android:layout_marginTop="20dp"
+	    android:layout_height="wrap_content"
+	    />
+	
+	<EditText 
+	    android:id="@+id/addLocFormDescEditText"
+	    android:layout_toRightOf="@+id/addLocFormDescTxt"
+	    android:layout_alignBaseline="@+id/addLocFormDescTxt"
+	    android:layout_width="match_parent"
+	    android:layout_height="wrap_content"
+	    android:textSize="12sp" 
+	    android:inputType="textMultiLine"/>
     
-	<TextView
-		android:id="@+id/txtMsg"
-		android:layout_width="match_parent"
-		android:layout_height="wrap_content"
-		android:layout_below="@+id/backBtn"
-		android:layout_marginTop="20dp"
-		android:gravity="center_horizontal"
-		android:text="위의 버튼을 누르면 메인 액티비티로 돌아갑니다."
-		android:textSize="14dp"
-		android:textColor="#ffad6535" />
-
 </RelativeLayout>

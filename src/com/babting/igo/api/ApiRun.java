@@ -1,6 +1,5 @@
 package com.babting.igo.api;
 
-import java.io.BufferedInputStream;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStream;
@@ -20,11 +19,15 @@ import org.apache.http.client.utils.URIUtils;
 import org.apache.http.client.utils.URLEncodedUtils;
 
 import com.babting.igo.api.DefaultConstants.HttpMethod;
+import com.babting.igo.api.result.ApiResult;
+import com.babting.igo.api.result.DaumTransCoordResult;
+import com.babting.igo.api.result.NaverSearchApiResult;
+import com.babting.igo.api.result.RegistLocationApiResult;
+import com.babting.igo.api.result.TransCoordDaumApiResult;
 import com.babting.igo.exception.ApiRunException;
 import com.babting.igo.exception.ParserException;
 import com.babting.igo.util.JacksonParser;
-import com.babting.igo.xml.model.NaverSearchApiXmlParserDOM;
-import com.babting.igo.xml.model.NaverSearchApiXmlParserSAX;
+import com.babting.igo.xml_parser.NaverSearchApiXmlParserDOM;
 
 public class ApiRun implements Callable<ApiResult> {
 	private ApiDefine apiDefine;
@@ -140,6 +143,46 @@ public class ApiRun implements Callable<ApiResult> {
 				}
 				
 				apiResult = naverSearchApiResult;
+			} else if("daum_trans_coord".equals(apiDefine.getApiType())) {
+				TransCoordDaumApiResult daumApiResult = new TransCoordDaumApiResult();
+				
+				JacksonParser jsonParser = JacksonParser.getInstance();
+				try {
+					InputStreamReader isr = new InputStreamReader(is);
+					BufferedReader br = new BufferedReader(isr);
+					String line;
+					StringBuffer lineBuf = new StringBuffer();
+					while((line = br.readLine()) != null) {
+						lineBuf.append(line);
+					}
+					
+					DaumTransCoordResult resultObj = jsonParser.readValue(lineBuf.toString(), DaumTransCoordResult.class);
+					daumApiResult.setDaumTransCoordResult(resultObj);
+					daumApiResult.setResultCode(ApiResult.STATUS_SUCCESS);
+					apiResult = daumApiResult;
+				} catch (ParserException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+			} else if("igoserver_loc_add".equals(apiDefine.getApiType())) {
+				JacksonParser jsonParser = JacksonParser.getInstance();
+				
+				try {
+					InputStreamReader isr = new InputStreamReader(is);
+					BufferedReader br = new BufferedReader(isr);
+					String line;
+					StringBuffer lineBuf = new StringBuffer();
+					while((line = br.readLine()) != null) {
+						lineBuf.append(line);
+					}
+					
+					RegistLocationApiResult registLocationApiResult = jsonParser.readValue(lineBuf.toString(), RegistLocationApiResult.class);
+					registLocationApiResult.setResultCode(ApiResult.STATUS_SUCCESS);
+					apiResult = registLocationApiResult;
+				} catch (ParserException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
 			}
 			
 			if(apiRequestor.isNeedApiCallback()) {

@@ -1,29 +1,21 @@
-package com.babting.igo.xml.model;
+package com.babting.igo.xml_parser;
 
 import java.io.IOException;
 import java.io.InputStream;
-import java.io.InputStreamReader;
-import java.io.Reader;
 import java.util.ArrayList;
 import java.util.List;
 
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.parsers.ParserConfigurationException;
-import javax.xml.parsers.SAXParser;
-import javax.xml.parsers.SAXParserFactory;
 
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
-import org.xml.sax.Attributes;
-import org.xml.sax.InputSource;
 import org.xml.sax.SAXException;
-import org.xml.sax.SAXParseException;
-import org.xml.sax.helpers.DefaultHandler;
 
-import android.util.Xml;
+import com.babting.igo.model.xml.NaverSearchApiModel;
 
 public class NaverSearchApiXmlParserDOM {
 	private DocumentBuilderFactory parserFact;
@@ -89,7 +81,7 @@ public class NaverSearchApiXmlParserDOM {
     	NodeList titleNodeList = titleElmnt.getChildNodes();
     	
     	if(titleNodeList.getLength() > 0) {
-    		return titleNodeList.item(0).getNodeValue();
+    		return titleNodeList.item(0).getNodeValue().replace("<b>", "").replace("</b>", "");
     	} else {
     		return "";
     	}

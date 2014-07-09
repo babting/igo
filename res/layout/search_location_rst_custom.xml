@@ -2,13 +2,15 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/searchLocationRstCustomLinear"
     android:layout_width="match_parent"
-    android:layout_height="100dp"
+    android:layout_height="wrap_content"
     >
 
    <TextView 
        android:id="@+id/searchLocationRstCustomTextViewTitle"
        android:layout_width="match_parent"
        android:layout_height="wrap_content"
+       android:textSize="13sp"
+       android:textStyle="bold|italic"
        />
     
    <TextView 

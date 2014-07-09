@@ -3,6 +3,8 @@ package com.babting.igo.api;
 import java.util.HashMap;
 import java.util.Map;
 
+import com.babting.igo.api.result.ApiResult;
+
 import android.content.Context;
 
 public class ApiRequestor {

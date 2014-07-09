@@ -14,9 +14,15 @@ import android.os.Handler;
 import android.os.Message;
 import android.util.Log;
 
+import com.babting.igo.activity.AddLocationActivity;
+import com.babting.igo.activity.SearchLocationResultActivity;
 import com.babting.igo.api.DefaultConstants.HttpMethod;
-import com.babting.igo.xml.model.NaverSearchApiModel;
-import com.babting.igo.xml.model.SearchLocationResultAdapterModel;
+import com.babting.igo.api.result.ApiResult;
+import com.babting.igo.api.result.NaverSearchApiResult;
+import com.babting.igo.api.result.RegistLocationApiResult;
+import com.babting.igo.api.result.SearchLocationResultAdapterModel;
+import com.babting.igo.api.result.TransCoordDaumApiResult;
+import com.babting.igo.model.xml.NaverSearchApiModel;
 
 public class OpenApiExecutor {
 	/**
@@ -45,14 +51,17 @@ public class OpenApiExecutor {
 						addrInfoStrBuf.append(outAddr.getAddressLine(k));
 					}
 					model.setTitle(addrInfoStrBuf.toString());
+					model.setMapX(Double.toString(outAddr.getLatitude()));
+					model.setMapY(Double.toString(outAddr.getLongitude()));
 					locNameList.add(model);
 				}
 				
-				Message msg = new Message();
+				Message msg = Message.obtain();
+				msg.what = SearchLocationResultActivity.API_LOC_SEARCH_GOOGLE;
 				Bundle bundle = new Bundle();
 				bundle.putParcelableArrayList("googleApiResult", locNameList);
 				msg.setData(bundle);
-				resultHandler.handleMessage(msg);
+				resultHandler.sendMessage(msg);
 			}
 		} catch (IOException e) {
 			e.printStackTrace();
@@ -98,14 +107,18 @@ public class OpenApiExecutor {
 								SearchLocationResultAdapterModel resultModel = new SearchLocationResultAdapterModel();
 								resultModel.setTitle(model.getTitle());
 								resultModel.setDescription(model.getDescription());
+								resultModel.setMapX(model.getMapX());
+								resultModel.setMapY(model.getMapY());
 								locNameList.add(resultModel);
 							}
 							
-							Message msg = new Message();
+							Message msg = Message.obtain();
+							msg.what = SearchLocationResultActivity.API_LOC_SEARCH_NAVER;
 							Bundle bundle = new Bundle();
 							bundle.putParcelableArrayList("naverApiResult", locNameList);
 							msg.setData(bundle);
-							resultHandler.handleMessage(msg);
+							
+							resultHandler.sendMessage(msg);
 						}
 						
 						Log.d("igo", "naver search result setting complete");
@@ -120,6 +133,90 @@ public class OpenApiExecutor {
 			}
 		});
 		
+		ApiExecutor.execute(apiRequester);
+	}
+	
+	public static void transCoordByDaum(Context context, String x, String y, final Handler resultHandler) {
+		ApiDefine apiDefine = new ApiDefine();
+		apiDefine.setApiType("daum_trans_coord");
+		apiDefine.setHost("apis.daum.net");
+		apiDefine.setProtocol("http");
+		apiDefine.setUrl("local/geo/transcoord");
+		apiDefine.setMethod(HttpMethod.HTTP_GET);
+		
+		ApiParams params = new ApiParams();
+		params.addParameter("apikey", "e0e69f5609148c88f3c542b35e60921bd015c9c1");
+		params.addParameter("x", x);
+		params.addParameter("y", y);
+		params.addParameter("fromCoord", "KTM");
+		params.addParameter("toCoord", "WGS84");
+		params.addParameter("output", "json");
+		ApiRequestor apiRequester = ApiRequestor.newInstance(apiDefine, params, context);
+		
+		apiRequester.setApiCallback(new ApiCallback() {
+			@Override
+			public void onSucceed(ApiResult apiResult, Context context) {
+				if (apiResult.getResultCode() == ApiResult.STATUS_SUCCESS) {
+					if(apiResult instanceof TransCoordDaumApiResult) {
+						TransCoordDaumApiResult transCoordDaumApiResult = (TransCoordDaumApiResult)apiResult;
+						
+						Message msg = resultHandler.obtainMessage(SearchLocationResultActivity.API_TRANS_COORD_DAUM);
+						//msg.what = SearchLocationResultActivity.API_TRANS_COORD_DAUM;
+						Bundle bundle = new Bundle();
+						bundle.putParcelable("transCoordDaumApiResult", transCoordDaumApiResult.getDaumTransCoordResult());
+						msg.setData(bundle);
+						resultHandler.sendMessage(msg);
+					}
+				}
+			}
+
+			@Override
+			public void onFailed(ApiResult result, Context context) {
+				// TODO Auto-generated method stub
+				
+			}
+		});
+			
+		ApiExecutor.execute(apiRequester);
+	}
+	
+	public static void registLocInfo(Context context, Double latitude, Double longitude, String locName, String desc, final Handler resultHandler) {
+		ApiDefine apiDefine = new ApiDefine();
+		apiDefine.setApiType("igoserver_loc_add");
+		apiDefine.setHost("excellent-bolt-614.appspot.com");
+		apiDefine.setProtocol("http");
+		apiDefine.setUrl("api/registLoc");
+		apiDefine.setMethod(HttpMethod.HTTP_GET);
+		
+		ApiParams params = new ApiParams();
+		params.addParameter("latitude", Double.toString(latitude));
+		params.addParameter("longitude", Double.toString(longitude));
+		params.addParameter("locName", locName);
+		params.addParameter("desc", desc);
+		ApiRequestor apiRequester = ApiRequestor.newInstance(apiDefine, params, context);
+		
+		apiRequester.setApiCallback(new ApiCallback() {
+			@Override
+			public void onSucceed(ApiResult apiResult, Context context) {
+				if (apiResult.getResultCode() == ApiResult.STATUS_SUCCESS) {
+					if(apiResult instanceof RegistLocationApiResult) {
+						Message msg = Message.obtain();
+						msg.what = AddLocationActivity.API_REGIST_LOC;
+						Bundle bundle = new Bundle();
+						bundle.putParcelable("apiResult", apiResult);
+						msg.setData(bundle);
+						resultHandler.sendMessage(msg);
+					}
+				}
+			}
+
+			@Override
+			public void onFailed(ApiResult result, Context context) {
+				// TODO Auto-generated method stub
+				
+			}
+		});
+			
 		ApiExecutor.execute(apiRequester);
 	}
 }
