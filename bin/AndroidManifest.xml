@@ -38,13 +38,22 @@
             android:label="@string/app_name" >
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
-
-                <category android:name="android.intent.category.LAUNCHER" />
-            </intent-filter>
+				<category android:name="android.intent.category.LAUNCHER" />
+			</intent-filter>
+			
         </activity>
         
-        <activity android:name="com.babting.igo.activity.AddLocationActivity"></activity>
+        <activity android:name="com.babting.igo.activity.AddLocationActivity" android:launchMode="singleTask">
+            <intent-filter>
+                <data android:scheme="igo-oauth" android:host="oauth"/>
+                <action android:name="android.intent.action.VIEW" />
+                <category android:name="android.intent.category.DEFAULT" />
+                <category android:name="android.intent.category.BROWSABLE" />
+            </intent-filter>
+        </activity>
         <activity android:name="com.babting.igo.activity.SearchLocationResultActivity"></activity>
+        <activity android:name="com.babting.igo.activity.FlickrActivity">
+        </activity>
     </application>
 
 </manifest>

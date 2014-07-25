@@ -1,0 +1,20 @@
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/flickr_linear_layout"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical" 
+    tools:context=".FlickrActivity">
+   
+    <RelativeLayout 
+        android:layout_width="fill_parent"
+		android:layout_height="wrap_content" 
+		android:padding="5dip">
+		<ImageView android:id="@+id/userIconImageView"
+			android:layout_alignParentLeft="true" android:layout_centerInParent="true"
+			android:layout_marginRight="8dip" android:src="@drawable/marker_restaurant" 
+			android:minHeight="24dp" android:minWidth="24dp" android:layout_width="48dp"
+			android:layout_height="48dp"/>
+	
+	</RelativeLayout>"
+</LinearLayout>

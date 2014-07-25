@@ -5,6 +5,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import android.app.Activity;
+import android.app.ProgressDialog;
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
@@ -13,7 +14,6 @@ import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
-import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.ListView;
 import android.widget.Toast;
@@ -24,6 +24,7 @@ import com.babting.igo.api.OpenApiExecutor;
 import com.babting.igo.api.result.ApiResult;
 import com.babting.igo.api.result.DaumTransCoordResult;
 import com.babting.igo.api.result.SearchLocationResultAdapterModel;
+import com.babting.igo.constants.MsgConstants;
 
 public class SearchLocationResultActivity extends Activity {
 	private Button cancelBtn;
@@ -41,6 +42,8 @@ public class SearchLocationResultActivity extends Activity {
 	
 	private String selectedTitleStr = "";
 	private String selectedDescStr = "";
+	
+	private ProgressDialog mProgressDialog;
 	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -71,12 +74,16 @@ public class SearchLocationResultActivity extends Activity {
 					String y = resultLocNameList.get(position).getMapY();
 					
 					// naver 검색결과 조회 시 좌표를 경도, 위도로 변경
-					Message message = mHandler.obtainMessage(API_TRANS_COORD_DAUM);
+					Message message = mHandler.obtainMessage(MsgConstants.API_TRANS_COORD_DAUM);
 					
 					selectedTitleStr = resultLocNameList.get(position).getTitle();
 					selectedDescStr = resultLocNameList.get(position).getDescription();
 					
 					OpenApiExecutor.transCoordByDaum(SearchLocationResultActivity.this, x, y, mHandler);
+					
+					mProgressDialog = ProgressDialog.show(SearchLocationResultActivity.this, "", "Searching " + selectedTitleStr + "'s location ..."); 
+			        mProgressDialog.setCanceledOnTouchOutside(false);
+			        mProgressDialog.setCancelable(true);
 					
 				} else {
 					Toast.makeText(SearchLocationResultActivity.this, resultLocNameList.get(position).getTitle(), Toast.LENGTH_SHORT).show();
@@ -92,7 +99,7 @@ public class SearchLocationResultActivity extends Activity {
 		
 		Toast.makeText(getBaseContext(), searchLocName, Toast.LENGTH_SHORT).show();
 		
-		mHandler.obtainMessage(API_LOC_SEARCH_GOOGLE);
+		mHandler.obtainMessage(MsgConstants.API_LOC_SEARCH_GOOGLE);
 		OpenApiExecutor.searchGoogleLocation(SearchLocationResultActivity.this, searchLocName, mHandler);
 		
 		// 취소 버튼
@@ -117,10 +124,13 @@ public class SearchLocationResultActivity extends Activity {
 				try {
 					listViewServiceDiv = "naver"; 
 							
-					mHandler.obtainMessage(API_LOC_SEARCH_NAVER);
+					mHandler.obtainMessage(MsgConstants.API_LOC_SEARCH_NAVER);
 					OpenApiExecutor.searchNaverLocation(SearchLocationResultActivity.this, searchLocName, mHandler);
+					
+					mProgressDialog = ProgressDialog.show(SearchLocationResultActivity.this, "", searchLocName + "Searching..."); 
+			        mProgressDialog.setCanceledOnTouchOutside(false);
+			        mProgressDialog.setCancelable(true);
 				} catch (UnsupportedEncodingException e) {
-					// TODO Auto-generated catch block
 					e.printStackTrace();
 				}
 			}
@@ -133,16 +143,17 @@ public class SearchLocationResultActivity extends Activity {
 			public void onClick(View arg0) {
 				listViewServiceDiv = "google";
 				
-				mHandler.obtainMessage(API_LOC_SEARCH_GOOGLE);
+				mHandler.obtainMessage(MsgConstants.API_LOC_SEARCH_GOOGLE);
 				OpenApiExecutor.searchGoogleLocation(SearchLocationResultActivity.this, searchLocName, mHandler);
+				
+				mProgressDialog = ProgressDialog.show(SearchLocationResultActivity.this, "", searchLocName + "Searching..."); 
+		        mProgressDialog.setCanceledOnTouchOutside(false);
+		        mProgressDialog.setCancelable(true);
 			}
 			
 		});
 	}
 	
-	public final static int API_TRANS_COORD_DAUM = 0;
-	public final static int API_LOC_SEARCH_NAVER = 1;
-	public final static int API_LOC_SEARCH_GOOGLE = 2;
 	private SearchLocationHandler mHandler;
 	class SearchLocationHandler extends Handler {
 		@Override
@@ -150,8 +161,12 @@ public class SearchLocationResultActivity extends Activity {
 			super.handleMessage(msg);
 			
 			switch(msg.what) {
-			case API_TRANS_COORD_DAUM : 
+			case MsgConstants.API_TRANS_COORD_DAUM : 
 				DaumTransCoordResult rstObj = msg.getData().getParcelable("transCoordDaumApiResult");
+				
+				if (mProgressDialog != null) {
+		            mProgressDialog.dismiss();
+		        }
 				
 				Intent rtnIntent = new Intent();
 				rtnIntent.putExtra("rtn", ApiResult.STATUS_SUCCESS);
@@ -164,21 +179,33 @@ public class SearchLocationResultActivity extends Activity {
 				
 				finish();
 				break;
-			case API_LOC_SEARCH_NAVER : 
+			case MsgConstants.API_LOC_SEARCH_NAVER : 
+				
 				ArrayList<SearchLocationResultAdapterModel> resultList = msg.getData().getParcelableArrayList("naverApiResult");
 				resultLocNameList.clear();
 				resultLocNameList.addAll(resultList);
 				adapter.notifyDataSetChanged();
 				
 				searchLocListView.refreshDrawableState();
+				
+				if (mProgressDialog != null) {
+		            mProgressDialog.dismiss();
+		        }
+				
 				break;
-			case API_LOC_SEARCH_GOOGLE :
+			case MsgConstants.API_LOC_SEARCH_GOOGLE :
+				
 				ArrayList<SearchLocationResultAdapterModel> googleResultList = msg.getData().getParcelableArrayList("googleApiResult");
 				resultLocNameList.clear();
 				resultLocNameList.addAll(googleResultList);
 				adapter.notifyDataSetChanged();
 				
 				searchLocListView.refreshDrawableState();
+				
+				if (mProgressDialog != null) {
+		            mProgressDialog.dismiss();
+		        }
+				
 				break;
 			}
 		}

@@ -4,6 +4,8 @@ import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
+import com.babting.igo.api.apirun.ApiRun;
+
 import android.content.Context;
 
 public class ApiExecutor {
@@ -32,8 +34,7 @@ public class ApiExecutor {
 	 * @param context Callback을 실행할 쓰레드 레퍼런스를 위해 넘겨준다.
 	 * @param apiRequestor API 요청 객체
 	 */
-	public static void execute(final ApiRequestor apiRequestor) {
-		ApiRun apiRun = new ApiRun(apiRequestor);
+	public static void execute(final ApiRun apiRun) {
 		ApiFutureTask apiExecutorTask = new ApiFutureTask(apiRun);
 		executor.execute(apiExecutorTask);
 	}

@@ -14,14 +14,19 @@ import android.os.Handler;
 import android.os.Message;
 import android.util.Log;
 
-import com.babting.igo.activity.AddLocationActivity;
-import com.babting.igo.activity.SearchLocationResultActivity;
 import com.babting.igo.api.DefaultConstants.HttpMethod;
+import com.babting.igo.api.apirun.ApiRun;
+import com.babting.igo.api.apirun.DaumTransCoordApiRun;
+import com.babting.igo.api.apirun.LocAddApiRun;
+import com.babting.igo.api.apirun.LocSearchApiRun;
+import com.babting.igo.api.apirun.NaverLocSearchApiRun;
 import com.babting.igo.api.result.ApiResult;
 import com.babting.igo.api.result.NaverSearchApiResult;
 import com.babting.igo.api.result.RegistLocationApiResult;
 import com.babting.igo.api.result.SearchLocationResultAdapterModel;
+import com.babting.igo.api.result.SelectLocationApiResult;
 import com.babting.igo.api.result.TransCoordDaumApiResult;
+import com.babting.igo.constants.MsgConstants;
 import com.babting.igo.model.xml.NaverSearchApiModel;
 
 public class OpenApiExecutor {
@@ -57,7 +62,7 @@ public class OpenApiExecutor {
 				}
 				
 				Message msg = Message.obtain();
-				msg.what = SearchLocationResultActivity.API_LOC_SEARCH_GOOGLE;
+				msg.what = MsgConstants.API_LOC_SEARCH_GOOGLE;
 				Bundle bundle = new Bundle();
 				bundle.putParcelableArrayList("googleApiResult", locNameList);
 				msg.setData(bundle);
@@ -113,7 +118,7 @@ public class OpenApiExecutor {
 							}
 							
 							Message msg = Message.obtain();
-							msg.what = SearchLocationResultActivity.API_LOC_SEARCH_NAVER;
+							msg.what = MsgConstants.API_LOC_SEARCH_NAVER;
 							Bundle bundle = new Bundle();
 							bundle.putParcelableArrayList("naverApiResult", locNameList);
 							msg.setData(bundle);
@@ -133,7 +138,8 @@ public class OpenApiExecutor {
 			}
 		});
 		
-		ApiExecutor.execute(apiRequester);
+		ApiRun apiRun = new NaverLocSearchApiRun(apiRequester);
+		ApiExecutor.execute(apiRun);
 	}
 	
 	public static void transCoordByDaum(Context context, String x, String y, final Handler resultHandler) {
@@ -160,7 +166,7 @@ public class OpenApiExecutor {
 					if(apiResult instanceof TransCoordDaumApiResult) {
 						TransCoordDaumApiResult transCoordDaumApiResult = (TransCoordDaumApiResult)apiResult;
 						
-						Message msg = resultHandler.obtainMessage(SearchLocationResultActivity.API_TRANS_COORD_DAUM);
+						Message msg = resultHandler.obtainMessage(MsgConstants.API_TRANS_COORD_DAUM);
 						//msg.what = SearchLocationResultActivity.API_TRANS_COORD_DAUM;
 						Bundle bundle = new Bundle();
 						bundle.putParcelable("transCoordDaumApiResult", transCoordDaumApiResult.getDaumTransCoordResult());
@@ -177,10 +183,11 @@ public class OpenApiExecutor {
 			}
 		});
 			
-		ApiExecutor.execute(apiRequester);
+		ApiRun apiRun = new DaumTransCoordApiRun(apiRequester);
+		ApiExecutor.execute(apiRun);
 	}
 	
-	public static void registLocInfo(Context context, Double latitude, Double longitude, String locName, String desc, final Handler resultHandler) {
+	public static void registLocInfo(Context context, Double latitude, Double longitude, String locName, String desc, String comment, String[] categoryList, final Handler resultHandler) {
 		ApiDefine apiDefine = new ApiDefine();
 		apiDefine.setApiType("igoserver_loc_add");
 		apiDefine.setHost("excellent-bolt-614.appspot.com");
@@ -193,6 +200,15 @@ public class OpenApiExecutor {
 		params.addParameter("longitude", Double.toString(longitude));
 		params.addParameter("locName", locName);
 		params.addParameter("desc", desc);
+		params.addParameter("comment", comment);
+		
+		StringBuffer categoryStrSb = new StringBuffer();
+		
+		for(int i = 0 ; i < categoryList.length ; i++) {
+			categoryStrSb.append(categoryList[i]);
+			if(i < categoryList.length - 1) categoryStrSb.append("|");
+		}
+		params.addParameter("categoryList", categoryStrSb.toString());
 		ApiRequestor apiRequester = ApiRequestor.newInstance(apiDefine, params, context);
 		
 		apiRequester.setApiCallback(new ApiCallback() {
@@ -201,7 +217,7 @@ public class OpenApiExecutor {
 				if (apiResult.getResultCode() == ApiResult.STATUS_SUCCESS) {
 					if(apiResult instanceof RegistLocationApiResult) {
 						Message msg = Message.obtain();
-						msg.what = AddLocationActivity.API_REGIST_LOC;
+						msg.what = MsgConstants.API_REGIST_LOC;
 						Bundle bundle = new Bundle();
 						bundle.putParcelable("apiResult", apiResult);
 						msg.setData(bundle);
@@ -217,6 +233,48 @@ public class OpenApiExecutor {
 			}
 		});
 			
-		ApiExecutor.execute(apiRequester);
+		ApiRun apiRun = new LocAddApiRun(apiRequester);
+		ApiExecutor.execute(apiRun);
+	}
+	
+	public static void searchLocInfoList(Context context, Double smallLatitude, Double largeLatitude, Double smallLongitude, Double largeLongitude, final Handler resultHandler) {
+		ApiDefine apiDefine = new ApiDefine();
+		apiDefine.setApiType("igoserver_loc_search");
+		apiDefine.setHost("excellent-bolt-614.appspot.com");
+		apiDefine.setProtocol("http");
+		apiDefine.setUrl("api/selectLoc");
+		apiDefine.setMethod(HttpMethod.HTTP_GET);
+		
+		ApiParams params = new ApiParams();
+		params.addParameter("smallLatitude", Double.toString(smallLatitude));
+		params.addParameter("smallLongitude", Double.toString(smallLongitude));
+		params.addParameter("largeLatitude", Double.toString(largeLatitude));
+		params.addParameter("largeLongitude", Double.toString(largeLongitude));
+		ApiRequestor apiRequester = ApiRequestor.newInstance(apiDefine, params, context);
+		
+		apiRequester.setApiCallback(new ApiCallback() {
+			@Override
+			public void onSucceed(ApiResult apiResult, Context context) {
+				if (apiResult.getResultCode() == ApiResult.STATUS_SUCCESS) {
+					if(apiResult instanceof SelectLocationApiResult) {
+						Message msg = Message.obtain();
+						msg.what = MsgConstants.API_SEARCH_LOC;
+						Bundle bundle = new Bundle();
+						bundle.putParcelable("apiResult", apiResult);
+						msg.setData(bundle);
+						resultHandler.sendMessage(msg);
+					}
+				}
+			}
+
+			@Override
+			public void onFailed(ApiResult result, Context context) {
+				// TODO Auto-generated method stub
+				
+			}
+		});
+			
+		ApiRun apiRun = new LocSearchApiRun(apiRequester);
+		ApiExecutor.execute(apiRun);
 	}
 }

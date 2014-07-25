@@ -1456,8 +1456,19 @@ containing a value of this type.
         public static final int ic_plusone_small_off_client=0x7f020071;
         public static final int ic_plusone_standard_off_client=0x7f020072;
         public static final int ic_plusone_tall_off_client=0x7f020073;
-        public static final int powered_by_google_dark=0x7f020074;
-        public static final int powered_by_google_light=0x7f020075;
+        public static final int marker_bar=0x7f020074;
+        public static final int marker_bread=0x7f020075;
+        public static final int marker_chinese=0x7f020076;
+        public static final int marker_coffee=0x7f020077;
+        public static final int marker_date=0x7f020078;
+        public static final int marker_family=0x7f020079;
+        public static final int marker_fastfood=0x7f02007a;
+        public static final int marker_icecream=0x7f02007b;
+        public static final int marker_new_loc=0x7f02007c;
+        public static final int marker_noodle=0x7f02007d;
+        public static final int marker_restaurant=0x7f02007e;
+        public static final int powered_by_google_dark=0x7f02007f;
+        public static final int powered_by_google_light=0x7f020080;
     }
     public static final class id {
         public static final int action_bar=0x7f05002e;
@@ -1471,14 +1482,17 @@ containing a value of this type.
         public static final int action_menu_divider=0x7f050016;
         public static final int action_menu_presenter=0x7f050017;
         public static final int action_mode_close_button=0x7f050036;
-        public static final int action_settings=0x7f050064;
+        public static final int action_settings=0x7f050075;
         public static final int activity_chooser_view_content=0x7f050037;
-        public static final int addLocFormDescEditText=0x7f05005a;
-        public static final int addLocFormDescTxt=0x7f050059;
+        public static final int addLocFormCategoryIconRelLayout=0x7f050058;
+        public static final int addLocFormCommentEditText=0x7f050068;
+        public static final int addLocFormCommentTxt=0x7f050067;
+        public static final int addLocFormDescEditText=0x7f050066;
+        public static final int addLocFormDescTxt=0x7f050065;
         public static final int addLocFormPreviewMap=0x7f050053;
         public static final int addLocFormRelLayout=0x7f050054;
-        public static final int addLocFormTitleEditText=0x7f050058;
-        public static final int addLocFormTitleTxt=0x7f050057;
+        public static final int addLocFormTitleEditText=0x7f050064;
+        public static final int addLocFormTitleTxt=0x7f050063;
         public static final int addPlaceBtn=0x7f050052;
         public static final int always=0x7f05000b;
         public static final int backBtn=0x7f050055;
@@ -1487,6 +1501,16 @@ containing a value of this type.
         public static final int buyButton=0x7f050022;
         public static final int buy_now=0x7f050027;
         public static final int buy_with_google=0x7f050026;
+        public static final int categoryBarImgBtn=0x7f050059;
+        public static final int categoryBreadImgBtn=0x7f05005a;
+        public static final int categoryChineseImgBtn=0x7f05005b;
+        public static final int categoryCoffeeImgBtn=0x7f05005c;
+        public static final int categoryDateImgBtn=0x7f05005d;
+        public static final int categoryFamilyImgBtn=0x7f05005e;
+        public static final int categoryFastfoodImgBtn=0x7f05005f;
+        public static final int categoryIceCreamImgBtn=0x7f050060;
+        public static final int categoryNoodleImgBtn=0x7f050061;
+        public static final int categoryRestaurantImgBtn=0x7f050062;
         public static final int checkbox=0x7f05003f;
         public static final int classic=0x7f050029;
         public static final int collapseActionView=0x7f05000d;
@@ -1498,6 +1522,7 @@ containing a value of this type.
         public static final int end=0x7f050013;
         public static final int expand_activities_button=0x7f050038;
         public static final int expanded_menu=0x7f05003e;
+        public static final int flickr_linear_layout=0x7f05006a;
         public static final int grayscale=0x7f05002a;
         public static final int holo_dark=0x7f05001d;
         public static final int holo_light=0x7f05001e;
@@ -1507,6 +1532,7 @@ containing a value of this type.
         public static final int icon=0x7f05003c;
         public static final int ifRoom=0x7f05000a;
         public static final int image=0x7f050039;
+        public static final int imgSearchBtn=0x7f050057;
         public static final int listMode=0x7f050001;
         public static final int list_item=0x7f05003b;
         public static final int map=0x7f05004e;
@@ -1525,16 +1551,16 @@ containing a value of this type.
         public static final int satellite=0x7f05001a;
         public static final int searchLocBtn=0x7f050051;
         public static final int searchLocEditText=0x7f050050;
-        public static final int searchLocGoogleResultBtn=0x7f05005e;
+        public static final int searchLocGoogleResultBtn=0x7f05006f;
         public static final int searchLocLinearLayout=0x7f05004f;
-        public static final int searchLocListView=0x7f05005f;
-        public static final int searchLocNaverResultBtn=0x7f05005d;
-        public static final int searchLocResultBackBtn=0x7f05005c;
-        public static final int searchLocResultRelativeLayout=0x7f05005b;
-        public static final int searchLocationRstCustomLinear=0x7f050061;
-        public static final int searchLocationRstCustomTextViewDesc=0x7f050063;
-        public static final int searchLocationRstCustomTextViewTitle=0x7f050062;
-        public static final int searchNaverLocListView=0x7f050060;
+        public static final int searchLocListView=0x7f050070;
+        public static final int searchLocNaverResultBtn=0x7f05006e;
+        public static final int searchLocResultBackBtn=0x7f05006d;
+        public static final int searchLocResultRelativeLayout=0x7f05006c;
+        public static final int searchLocationRstCustomLinear=0x7f050072;
+        public static final int searchLocationRstCustomTextViewDesc=0x7f050074;
+        public static final int searchLocationRstCustomTextViewTitle=0x7f050073;
+        public static final int searchNaverLocListView=0x7f050071;
         public static final int search_badge=0x7f050044;
         public static final int search_bar=0x7f050043;
         public static final int search_button=0x7f050045;
@@ -1558,7 +1584,9 @@ containing a value of this type.
         public static final int title=0x7f05003d;
         public static final int top_action_bar=0x7f050032;
         public static final int up=0x7f050033;
+        public static final int uploadImgPreViewImageView=0x7f050069;
         public static final int useLogo=0x7f050003;
+        public static final int userIconImageView=0x7f05006b;
         public static final int withText=0x7f05000c;
         public static final int wrap_content=0x7f050025;
     }
@@ -1615,9 +1643,10 @@ containing a value of this type.
         public static final int abc_simple_decor=0x7f030017;
         public static final int activity_main=0x7f030018;
         public static final int add_location_form=0x7f030019;
-        public static final int search_location_list=0x7f03001a;
-        public static final int search_location_rst_custom=0x7f03001b;
-        public static final int support_simple_spinner_dropdown_item=0x7f03001c;
+        public static final int flickr=0x7f03001a;
+        public static final int search_location_list=0x7f03001b;
+        public static final int search_location_rst_custom=0x7f03001c;
+        public static final int support_simple_spinner_dropdown_item=0x7f03001d;
     }
     public static final class menu {
         public static final int main=0x7f0c0000;

@@ -1,10 +1,16 @@
 package com.babting.igo.activity;
 
+import java.util.List;
+import java.util.StringTokenizer;
+
+import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
 import android.location.Location;
 import android.location.LocationManager;
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.Message;
 import android.support.v4.app.FragmentActivity;
 import android.util.Log;
 import android.view.Menu;
@@ -15,12 +21,20 @@ import android.widget.EditText;
 import android.widget.Toast;
 
 import com.babting.igo.R;
+import com.babting.igo.api.OpenApiExecutor;
 import com.babting.igo.api.result.ApiResult;
+import com.babting.igo.api.result.SelectLocationApiResult;
+import com.babting.igo.constants.MsgConstants;
+import com.babting.igo.model.Categorys;
+import com.babting.igo.model.LocationInfo;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
+import com.google.android.gms.maps.GoogleMap.OnCameraChangeListener;
 import com.google.android.gms.maps.GoogleMap.OnMapClickListener;
 import com.google.android.gms.maps.GoogleMap.OnMyLocationChangeListener;
 import com.google.android.gms.maps.SupportMapFragment;
+import com.google.android.gms.maps.model.BitmapDescriptorFactory;
+import com.google.android.gms.maps.model.CameraPosition;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
@@ -41,20 +55,24 @@ public class MainActivity extends FragmentActivity {
 	private String selectedTitleStr = "";
 	private String selectedDescStr = "";
 	
+	private ProgressDialog mProgressDialog;
+	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_main);
+		
+		mHandler = new SearchLocationHandler();
 		
     	map = ((SupportMapFragment) getSupportFragmentManager().findFragmentById(R.id.map)).getMap();
     	map.setMyLocationEnabled(true);
     	
     	map.setOnMyLocationChangeListener(onMyLocationChangeListener);
     	map.setOnMapClickListener(onMapClickListener);
+    	map.setOnCameraChangeListener(onCameraChangeListener);
     	
     	locationManager = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
 		provider = LocationManager.NETWORK_PROVIDER;
-		
 		
 		addButton = (Button)findViewById(R.id.addPlaceBtn);
 		addButton.setVisibility(View.INVISIBLE);
@@ -65,7 +83,7 @@ public class MainActivity extends FragmentActivity {
 			@Override
 			public void onClick(View arg0) {
 				Intent intent = new Intent(getBaseContext(), AddLocationActivity.class);
-				intent.setFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP);
+				intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
 				intent.putExtra("latitude", currentLatitude);
 				intent.putExtra("longitude", currentLongitude);
 				intent.putExtra("title", selectedTitleStr);
@@ -89,6 +107,43 @@ public class MainActivity extends FragmentActivity {
 			}
 			
 		});
+		
+		mProgressDialog = ProgressDialog.show(this, "", "Searching current location..."); 
+        mProgressDialog.setCanceledOnTouchOutside(true);
+        mProgressDialog.setCancelable(true);
+	}
+	
+	private SearchLocationHandler mHandler;
+	class SearchLocationHandler extends Handler {
+		@Override
+		public void handleMessage(Message msg) {
+			super.handleMessage(msg);
+			
+			switch(msg.what) {
+			case MsgConstants.API_SEARCH_LOC : 
+				SelectLocationApiResult rstObj = msg.getData().getParcelable("apiResult");
+				
+				List<LocationInfo> locationInfoList = rstObj.getLocationList();
+				Toast.makeText(getBaseContext(), "registered location count : " + locationInfoList.size(), Toast.LENGTH_SHORT).show();
+				
+				if(locationInfoList.size() > 0) { // 현재 보이는 지도안에 등록된 지점이 있을 경우
+					for(int i = 0 ; i < locationInfoList.size() ; i++) {
+						LocationInfo locationInfo = locationInfoList.get(i);
+						Marker registeredMarker = map.addMarker(new MarkerOptions().position(new LatLng(locationInfo.getLatitude(), locationInfo.getLongitude())).title(locationInfo.getPlaceName()));
+						
+						int markerReserouce = R.drawable.marker_bread;
+						if(locationInfo.getCategorys() != null && !locationInfo.getCategorys().equals("")) {
+							StringTokenizer tokenizer = new StringTokenizer(locationInfo.getCategorys(), "|");
+							if(tokenizer.hasMoreTokens()) {
+								Categorys categorys = Categorys.getCategorysInfoFromCode(tokenizer.nextToken());
+								markerReserouce = categorys.getMarkerImgId();
+							}
+						}
+						registeredMarker.setIcon(BitmapDescriptorFactory.fromResource(markerReserouce));
+					}
+				}
+			}
+		}
 	}
 	
 	@Override
@@ -98,13 +153,21 @@ public class MainActivity extends FragmentActivity {
 		if (requestCode == REQUEST_ADD_LOCATION_FRM) {
 			if(data != null) {
 				Bundle extras = data.getExtras();
-				if(ApiResult.STATUS_SUCCESS.equals(extras.getString("rtn"))) {
-					// currentLatitude, currentLongitude에 마지막 설정된 위치가 저장되어 있을 것이기 때문에 위치 등록 성공 시 marker를 새로 생성해 고정시킴.
-					Marker registeredMarker = map.addMarker(new MarkerOptions().position(new LatLng(currentLatitude, currentLongitude)).title(extras.getString("title")));
-					registeredMarker.showInfoWindow(); // 말풍선 show
-					
-					addButton.setVisibility(View.INVISIBLE);
+				
+				// currentLatitude, currentLongitude에 마지막 설정된 위치가 저장되어 있을 것이기 때문에 위치 등록 성공 시 marker를 새로 생성해 고정시킴.
+				Marker registeredMarker = map.addMarker(new MarkerOptions().position(new LatLng(currentLatitude, currentLongitude)).title(extras.getString("title")));
+				
+				String[] selectedCategorys = extras.getStringArray("categorys");
+				int markerReserouce = R.drawable.marker_bread;
+				if(selectedCategorys != null && selectedCategorys.length > 0) {
+					Categorys categorys = Categorys.getCategorysInfoFromCode(selectedCategorys[0]);
+					markerReserouce = categorys.getMarkerImgId();
 				}
+				
+				registeredMarker.setIcon(BitmapDescriptorFactory.fromResource(markerReserouce));
+				registeredMarker.showInfoWindow(); // 말풍선 show
+				
+				addButton.setVisibility(View.INVISIBLE);
 			} else {
 				Toast.makeText(getBaseContext(), "cancel~!", Toast.LENGTH_SHORT).show();
 			}
@@ -146,6 +209,9 @@ public class MainActivity extends FragmentActivity {
 			currentMarker = map.addMarker(new MarkerOptions().position(new LatLng(y, x)));
 		}
 		
+		currentMarker.setIcon(BitmapDescriptorFactory.fromResource(R.drawable.marker_new_loc));
+		currentMarker.setTitle("새로운 장소로 등록해 주세요~!");
+		currentMarker.showInfoWindow();
 		currentLatitude = y;
 		currentLongitude = x;
 	}
@@ -159,10 +225,41 @@ public class MainActivity extends FragmentActivity {
 			currentLongitude = location.getLongitude();
 			map.moveCamera(CameraUpdateFactory.newLatLngZoom(new LatLng(location.getLatitude(), location.getLongitude()), 15));
 			Log.d("igo", location.getLatitude() + " / " + location.getLongitude());
+			
+			if (mProgressDialog != null) {
+	            mProgressDialog.dismiss();
+	        }
+			
 			map.setOnMyLocationChangeListener(null); // 현재 위치로 이동 후 listener 삭제
+			
+			
+			// 현재 보여지는 지도에 해당하는 등록되어 있는 정보들을 select
+	    	double top = map.getProjection().getVisibleRegion().latLngBounds.northeast.latitude;
+	    	double right = map.getProjection().getVisibleRegion().latLngBounds.northeast.longitude;
+	    	double bottom = map.getProjection().getVisibleRegion().latLngBounds.southwest.latitude;
+	    	double left = map.getProjection().getVisibleRegion().latLngBounds.southwest.longitude;
+	    	mHandler.obtainMessage(MsgConstants.API_SEARCH_LOC);
+	    	OpenApiExecutor.searchLocInfoList(MainActivity.this, bottom, top, left, right, mHandler);
 		}
 
 	}; 
+	
+	private OnCameraChangeListener onCameraChangeListener = new OnCameraChangeListener() {
+
+		@Override
+		public void onCameraChange(CameraPosition position) {
+			// get current location of camera
+			double top = map.getProjection().getVisibleRegion().latLngBounds.northeast.latitude;
+	    	double right = map.getProjection().getVisibleRegion().latLngBounds.northeast.longitude;
+	    	double bottom = map.getProjection().getVisibleRegion().latLngBounds.southwest.latitude;
+	    	double left = map.getProjection().getVisibleRegion().latLngBounds.southwest.longitude;
+	    	
+	    	// DB에서 현재 위치에 해당하는 장소들 검색
+	    	mHandler.obtainMessage(MsgConstants.API_SEARCH_LOC);
+	    	OpenApiExecutor.searchLocInfoList(MainActivity.this, bottom, top, left, right, mHandler);
+		}
+		
+	};
 	
 	private Marker currentMarker;
 	private OnMapClickListener onMapClickListener = new OnMapClickListener() {

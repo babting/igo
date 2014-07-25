@@ -1,75 +1,179 @@
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="match_parent" >
+    android:layout_height="match_parent"
+    android:orientation="vertical" >
 
 	<fragment android:id="@+id/addLocFormPreviewMap"
 	    android:layout_width="match_parent"
 	    android:layout_height="200dp"
 	    class="com.google.android.gms.maps.SupportMapFragment" />
 	
-	<LinearLayout
-	    android:id="@+id/addLocFormRelLayout" 
-	    android:layout_below="@+id/addLocFormPreviewMap"
-	    android:layout_marginTop="5dp"
-	    android:layout_height="wrap_content"
+	<ScrollView 
+	    android:layout_width="match_parent" 
+	    android:layout_height="match_parent">
+		<RelativeLayout
 	    android:layout_width="match_parent"
-	    android:orientation="horizontal"
-	    >
-		<Button
-	        android:id="@+id/backBtn"
-	        android:layout_width="wrap_content"
-	        android:layout_height="wrap_content"
-	        android:layout_marginRight="3dp"
-	        android:text="Cancel"
-	        android:textSize="12sp"
-	        tools:context=".MainActivity" />
-		
-		<Button
-	        android:id="@+id/registBtn"
-	        android:layout_width="wrap_content"
-	        android:layout_height="wrap_content"
-	        android:text="Regist"
-	        android:textSize="12sp"
-	        tools:context=".MainActivity" />
-	</LinearLayout>
-	
-	<TextView 
-	    android:id="@+id/addLocFormTitleTxt"
-	    android:text="Title"
-	    android:layout_alignParentLeft="true"
-	    android:layout_below="@+id/addLocFormRelLayout"
-	    android:layout_width="100dp"
-	    android:layout_marginTop="10dp"
-	    android:layout_height="wrap_content"
-	    />
-	
-	<EditText 
-	    android:id="@+id/addLocFormTitleEditText"
-	    android:layout_toRightOf="@+id/addLocFormTitleTxt"
-	    android:layout_alignBaseline="@+id/addLocFormTitleTxt"
-	    android:layout_width="match_parent"
-	    android:layout_height="wrap_content"
-	    android:textSize="12sp" 
-	    android:inputType="text"/>
-	
-	<TextView 
-	    android:id="@+id/addLocFormDescTxt"
-	    android:text="Desc"
-	    android:layout_alignParentLeft="true"
-	    android:layout_below="@+id/addLocFormTitleTxt"
-	    android:layout_width="100dp"
-	    android:layout_marginTop="20dp"
-	    android:layout_height="wrap_content"
-	    />
-	
-	<EditText 
-	    android:id="@+id/addLocFormDescEditText"
-	    android:layout_toRightOf="@+id/addLocFormDescTxt"
-	    android:layout_alignBaseline="@+id/addLocFormDescTxt"
-	    android:layout_width="match_parent"
-	    android:layout_height="wrap_content"
-	    android:textSize="12sp" 
-	    android:inputType="textMultiLine"/>
-    
-</RelativeLayout>
+	    android:layout_height="wrap_content" >
+			<LinearLayout
+			    android:id="@+id/addLocFormRelLayout" 
+			    android:layout_alignParentTop="true"
+			    android:layout_marginTop="5dp"
+			    android:layout_height="wrap_content"
+			    android:layout_width="match_parent"
+			    android:orientation="horizontal"
+			    >
+				<Button
+			        android:id="@+id/backBtn"
+			        android:layout_width="wrap_content"
+			        android:layout_height="wrap_content"
+			        android:layout_marginRight="3dp"
+			        android:text="Cancel"
+			        android:textSize="12sp"
+			        tools:context=".MainActivity" />
+				
+				<Button
+			        android:id="@+id/registBtn"
+			        android:layout_width="wrap_content"
+			        android:layout_height="wrap_content"
+			        android:text="Regist"
+			        android:textSize="12sp"
+			        tools:context=".MainActivity" />
+				
+				<Button
+			        android:id="@+id/imgSearchBtn"
+			        android:layout_width="wrap_content"
+			        android:layout_height="wrap_content"
+			        android:text="Image+"
+			        android:textSize="12sp"/>
+			</LinearLayout>
+			
+			<LinearLayout
+			    android:id="@+id/addLocFormCategoryIconRelLayout" 
+			    android:layout_below="@+id/addLocFormRelLayout"
+			    android:layout_marginTop="5dp"
+			    android:layout_height="wrap_content"
+			    android:layout_width="match_parent"
+			    android:orientation="horizontal"
+			    >
+				<ImageButton 
+				    android:id="@+id/categoryBarImgBtn"
+				    android:src="@drawable/marker_bar"
+				    android:layout_width="25dp"
+				    android:layout_height="25dp"
+				    android:contentDescription="TODO"
+				    />
+				<ImageButton 
+				    android:id="@+id/categoryBreadImgBtn"
+				    android:src="@drawable/marker_bread"
+				    android:layout_width="25dp"
+				    android:layout_height="25dp" android:contentDescription="TODO"/>
+				<ImageButton 
+				    android:id="@+id/categoryChineseImgBtn"
+				    android:src="@drawable/marker_chinese"
+				    android:layout_width="25dp"
+				    android:layout_height="25dp" android:contentDescription="TODO"/>
+				<ImageButton 
+				    android:id="@+id/categoryCoffeeImgBtn"
+				    android:src="@drawable/marker_coffee"
+				    android:layout_width="25dp"
+				    android:layout_height="25dp" android:contentDescription="TODO"/>
+				<ImageButton 
+				    android:id="@+id/categoryDateImgBtn"
+				    android:src="@drawable/marker_date"
+				    android:layout_width="25dp"
+				    android:layout_height="25dp" android:contentDescription="TODO"/>
+				<ImageButton 
+				    android:id="@+id/categoryFamilyImgBtn"
+				    android:src="@drawable/marker_family"
+				    android:layout_width="25dp"
+				    android:layout_height="25dp" android:contentDescription="TODO"/>
+				<ImageButton 
+				    android:id="@+id/categoryFastfoodImgBtn"
+				    android:src="@drawable/marker_fastfood"
+				    android:layout_width="25dp"
+				    android:layout_height="25dp" android:contentDescription="TODO"/>
+				<ImageButton 
+				    android:id="@+id/categoryIceCreamImgBtn"
+				    android:src="@drawable/marker_icecream"
+				    android:layout_width="25dp"
+				    android:layout_height="25dp" android:contentDescription="TODO"/>
+				<ImageButton 
+				    android:id="@+id/categoryNoodleImgBtn"
+				    android:src="@drawable/marker_noodle"
+				    android:layout_width="25dp"
+				    android:layout_height="25dp" android:contentDescription="TODO"/>
+				<ImageButton 
+				    android:id="@+id/categoryRestaurantImgBtn"
+				    android:src="@drawable/marker_restaurant"
+				    android:layout_width="25dp"
+				    android:layout_height="25dp" android:contentDescription="TODO"/>
+			</LinearLayout>
+			
+			<TextView 
+			    android:id="@+id/addLocFormTitleTxt"
+			    android:text="Title"
+			    android:layout_alignParentLeft="true"
+			    android:layout_below="@+id/addLocFormCategoryIconRelLayout"
+			    android:layout_width="100dp"
+			    android:layout_marginTop="10dp"
+			    android:layout_height="wrap_content"
+			    />
+			
+			<EditText 
+			    android:id="@+id/addLocFormTitleEditText"
+			    android:layout_toRightOf="@+id/addLocFormTitleTxt"
+			    android:layout_alignBaseline="@+id/addLocFormTitleTxt"
+			    android:layout_width="match_parent"
+			    android:layout_height="wrap_content"
+			    android:textSize="12sp" 
+			    android:inputType="text"/>
+			
+			<TextView 
+			    android:id="@+id/addLocFormDescTxt"
+			    android:text="Desc"
+			    android:layout_alignParentLeft="true"
+			    android:layout_below="@+id/addLocFormTitleTxt"
+			    android:layout_width="100dp"
+			    android:layout_marginTop="20dp"
+			    android:layout_height="wrap_content"
+			    />
+			
+			<EditText 
+			    android:id="@+id/addLocFormDescEditText"
+			    android:layout_toRightOf="@+id/addLocFormDescTxt"
+			    android:layout_alignBaseline="@+id/addLocFormDescTxt"
+			    android:layout_width="match_parent"
+			    android:layout_height="wrap_content"
+			    android:textSize="12sp" 
+			    android:inputType="textMultiLine"/>
+			
+			<TextView 
+			    android:id="@+id/addLocFormCommentTxt"
+			    android:text="Comment"
+			    android:layout_alignParentLeft="true"
+			    android:layout_below="@+id/addLocFormDescTxt"
+			    android:layout_width="100dp"
+			    android:layout_marginTop="20dp"
+			    android:layout_height="wrap_content"
+			    />
+			
+			<EditText 
+			    android:id="@+id/addLocFormCommentEditText"
+			    android:layout_toRightOf="@+id/addLocFormCommentTxt"
+			    android:layout_alignBaseline="@+id/addLocFormCommentTxt"
+			    android:layout_width="match_parent"
+			    android:layout_height="wrap_content"
+			    android:textSize="12sp" 
+			    android:inputType="textMultiLine"/>
+		    
+			<ImageView
+			    android:id="@+id/uploadImgPreViewImageView"
+			    android:layout_width="100dp"
+			    android:layout_height="70dp"
+			    android:layout_below="@+id/addLocFormCommentTxt"
+			    android:layout_marginTop="15dp"
+			    />
+		</RelativeLayout>
+	</ScrollView>
+</LinearLayout>
