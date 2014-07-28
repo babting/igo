@@ -7,15 +7,15 @@ import com.babting.igo.R;
 
 public enum Categorys {
 	CATEGORY_BAR(R.id.categoryBarImgBtn, "Bar", "category_bar", R.drawable.marker_bar),
-	CATEGORY_BREAD(R.id.categoryBreadImgBtn, "ªß", "category_bread", R.drawable.marker_bread),
-	CATEGORY_CHINESE(R.id.categoryChineseImgBtn, "¡ﬂ±π¿ΩΩƒ", "category_chiness", R.drawable.marker_chinese),
-	CATEGORY_COFFEE(R.id.categoryCoffeeImgBtn, "ƒø««", "category_coffee", R.drawable.marker_coffee),
-	CATEGORY_DATE(R.id.categoryDateImgBtn, "µ•¿Ã∆Æ", "category_date", R.drawable.marker_date),
-	CATEGORY_FAMILY(R.id.categoryFamilyImgBtn, "∞°¡∑", "category_family", R.drawable.marker_family),
-	CATEGORY_FASTFOOD(R.id.categoryFastfoodImgBtn, "∆–Ω∫∆Æ«™µÂ", "category_fastfood", R.drawable.marker_fastfood),
-	CATEGORY_ICECREAM(R.id.categoryIceCreamImgBtn, "æ∆¿ÃΩ∫≈©∏≤", "category_icecream", R.drawable.marker_icecream),
-	CATEGORY_NOODLE(R.id.categoryNoodleImgBtn, "∏È", "category_noodle", R.drawable.marker_noodle),
-	CATEGORY_RESTAURANT(R.id.categoryRestaurantImgBtn, "∑πΩ∫≈‰∂˚", "category_restaurant", R.drawable.marker_restaurant);
+	CATEGORY_BREAD(R.id.categoryBreadImgBtn, "Îπµ", "category_bread", R.drawable.marker_bread),
+	CATEGORY_CHINESE(R.id.categoryChineseImgBtn, "Ï§ëÍµ≠ÏùåÏãù", "category_chiness", R.drawable.marker_chinese),
+	CATEGORY_COFFEE(R.id.categoryCoffeeImgBtn, "Ïª§Ìîº", "category_coffee", R.drawable.marker_coffee),
+	CATEGORY_DATE(R.id.categoryDateImgBtn, "Îç∞Ïù¥Ìä∏", "category_date", R.drawable.marker_date),
+	CATEGORY_FAMILY(R.id.categoryFamilyImgBtn, "Í∞ÄÏ°±", "category_family", R.drawable.marker_family),
+	CATEGORY_FASTFOOD(R.id.categoryFastfoodImgBtn, "Ìå®Ïä§Ìä∏Ìë∏Îìú", "category_fastfood", R.drawable.marker_fastfood),
+	CATEGORY_ICECREAM(R.id.categoryIceCreamImgBtn, "ÏïÑÏù¥Ïä§ÌÅ¨Î¶º", "category_icecream", R.drawable.marker_icecream),
+	CATEGORY_NOODLE(R.id.categoryNoodleImgBtn, "Î©¥", "category_noodle", R.drawable.marker_noodle),
+	CATEGORY_RESTAURANT(R.id.categoryRestaurantImgBtn, "Î†àÏä§ÌÜ†Îûë", "category_restaurant", R.drawable.marker_restaurant);
 	
 	Categorys(int id, String name, String code, int markerImgId) {
 		this.id = id;
